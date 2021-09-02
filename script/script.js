@@ -1,3 +1,78 @@
+/**called when a cell is completly empty it pass the indexes around this cell to a function that remove the background; it might be call back if the function that removesbackground finds a square without bombs around */
+function unlockFreeCells(j,i){
+    let cells=Math.sqrt(totalCells);
+    if(j==0){
+        if(i==0){
+            checkAndUnlock(i+1);
+            checkAndUnlock(i+cells*(j+1));
+            checkAndUnlock(i+1+cells*(j+1));
+        }else if(i==cells-1){
+            checkAndUnlock(i-1);
+            checkAndUnlock(i+cells*(j+1));
+            checkAndUnlock(i-1+cells*(j+1));
+        }else{
+            checkAndUnlock(i-1);
+            checkAndUnlock(i+1);
+            checkAndUnlock(i+cells*(j+1));
+            checkAndUnlock(i-1+cells*(j+1));
+            checkAndUnlock(i+1+cells*(j+1));
+        }
+    }else if(j==cells-1){
+        if(i==0){
+            checkAndUnlock(i+cells*(j-1));
+            checkAndUnlock(i+1+cells*(j-1));
+            checkAndUnlock(i+1+cells*(j));
+        }else if(i==cells-1){
+            checkAndUnlock(i-1+cells*(j));
+            checkAndUnlock(i-1+cells*(j-1));
+            checkAndUnlock(i+cells*(j-1));
+        }else{
+            checkAndUnlock(i-1+cells*(j));
+            checkAndUnlock(i-1+cells*(j-1));
+            checkAndUnlock(i+cells*(j-1));
+            checkAndUnlock(i+1+cells*(j-1));
+            checkAndUnlock(i+1+cells*(j));
+        }
+    }else if(i==0){
+        checkAndUnlock(i+cells*(j-1));
+        checkAndUnlock(i+cells*(j+1));
+        checkAndUnlock(i+1+cells*(j-1));
+        checkAndUnlock(i+1+cells*(j+1));
+        checkAndUnlock(i+1+cells*(j));
+    }else if(i==cells-1){
+        checkAndUnlock(i+cells*(j-1));
+        checkAndUnlock(i+cells*(j+1));
+        checkAndUnlock(i-1+cells*(j-1));
+        checkAndUnlock(i-1+cells*(j+1));
+        checkAndUnlock(i-1+cells*(j));
+    }else{
+        checkAndUnlock(i+cells*(j-1));
+        checkAndUnlock(i+cells*(j+1));
+        checkAndUnlock(i-1+cells*(j-1));
+        checkAndUnlock(i-1+cells*(j+1));
+        checkAndUnlock(i-1+cells*(j));
+        checkAndUnlock(i+1+cells*(j-1));
+        checkAndUnlock(i+1+cells*(j+1));
+        checkAndUnlock(i+1+cells*(j));
+    }
+}
+/** removes the grass and add dirt to the cells without bomb with i given as argument by unlockFreeCells; it may call beck unlockFreeCells if the cell is completely empty*/
+function checkAndUnlock(i){
+    if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
+        let x=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
+        let y=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[1]);//[i] in two var
+        document.getElementsByClassName("cell")[i].classList.remove("stdBgr");//remove the grass bgr
+        document.getElementsByClassName("cell")[i].classList.add("checkedBgr");//add dirt bgr
+        document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
+        totalClick++;//incrementing the score
+        if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].innerHTML==""){
+            unlockFreeCells(x,y);
+        }
+        if(totalClick==totalCells-17){//if the score is total-17
+            gameOver("won",totalClick);//i won :)
+        }
+    }
+}
 /**a function that toggle select visibility */
 function toggleSelect(){
     document.getElementById("choice").parentElement.classList.toggle("invisible");
@@ -44,10 +119,8 @@ function generateGameBoard(cells){
     board.innerHTML="";
     //get the frame width from the var in css
     var frameWidth = parseInt(getComputedStyle(root).getPropertyValue('--frameWidth').match(/[0-9]/g).join(""));
-    // console.log(`the max width is :${frameWidth}`);
     var cellWidth = frameWidth/cells;
     cellWidth+="px";
-    // console.log(`the cell width is :${cellWidth}`);
     //write a var cellwidth in css that is set as sigle cell width
     root.style.setProperty("--cellWidth" , cellWidth);
     let t=0,j=0;//var to cycle the matrix
@@ -120,101 +193,28 @@ document.getElementById("choice").addEventListener("change", function(event){
 //add the click eventlistener to the frame
 document.getElementById("gameFrame").addEventListener("mousedown",function(event){
     clickedCell=event.target;
-    let j=parseInt(clickedCell.getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
-    let i=parseInt(clickedCell.getAttribute('value').split(",")[1]);//[i] in two var
-    clickedCell.classList.remove("stdBgr");//remove the grass bgr
-    if(bombMap[j][i]==1){//if the cell corispond to a bomb
-        clickedCell.classList.add("bomb");//adding bomb bgr
-        gameOver("lost",totalClick);//ending game
-    }else{
-        if(clickedCell.getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
-            clickedCell.classList.add("checkedBgr");//add dirt bgr
-            clickedCell.getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
-            totalClick++;//incrementing the score
-            if(clickedCell.getElementsByClassName("radius")[0].innerHTML==""){
-                unlockFreeCells(j,i);
-            }
-            if(totalClick==totalCells-17){//if the score is total-17
-                gameOver("won",totalClick);//i won :)
+    if(clickedCell.classList.contains("cell")){
+        let j=parseInt(clickedCell.getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
+        let i=parseInt(clickedCell.getAttribute('value').split(",")[1]);//[i] in two var
+        clickedCell.classList.remove("stdBgr");//remove the grass bgr
+        if(bombMap[j][i]==1){//if the cell corispond to a bomb
+            clickedCell.classList.add("bomb");//adding bomb bgr
+            gameOver("lost",totalClick);//ending game
+        }else{
+            if(clickedCell.getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
+                clickedCell.classList.add("checkedBgr");//add dirt bgr
+                clickedCell.getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
+                totalClick++;//incrementing the score
+                if(clickedCell.getElementsByClassName("radius")[0].innerHTML==""){
+                    unlockFreeCells(j,i);
+                }
+                if(totalClick==totalCells-17){//if the score is total-17
+                    gameOver("won",totalClick);//i won :)
+                }
             }
         }
     }
 });
-function unlockFreeCells(j,i){
-    let cells=Math.sqrt(totalCells);
-    if(j==0){
-        if(i==0){
-            checkAndUnlock(i+1);
-            checkAndUnlock(i+cells*(j+1));
-            checkAndUnlock(i+1+cells*(j+1));
-        }else if(i==cells-1){
-            checkAndUnlock(i-1);
-            checkAndUnlock(i+cells*(j+1));
-            checkAndUnlock(i-1+cells*(j+1));
-        }else{
-            checkAndUnlock(i-1);
-            checkAndUnlock(i+1);
-            checkAndUnlock(i+cells*(j+1));
-            checkAndUnlock(i-1+cells*(j+1));
-            checkAndUnlock(i+1+cells*(j+1));
-        }
-    }else if(j==cells-1){
-        if(i==0){
-            checkAndUnlock(i+cells*(j-1));
-            checkAndUnlock(i+1+cells*(j-1));
-            checkAndUnlock(i+1+cells*(j));
-        }else if(i==cells-1){
-            checkAndUnlock(i-1+cells*(j));
-            checkAndUnlock(i-1+cells*(j-1));
-            checkAndUnlock(i+cells*(j-1));
-        }else{
-            checkAndUnlock(i-1+cells*(j));
-            checkAndUnlock(i-1+cells*(j-1));
-            checkAndUnlock(i+cells*(j-1));
-            checkAndUnlock(i+1+cells*(j-1));
-            checkAndUnlock(i+1+cells*(j));
-        }
-    }else if(i==0){
-        checkAndUnlock(i+cells*(j-1));
-        checkAndUnlock(i+cells*(j+1));
-        checkAndUnlock(i+1+cells*(j-1));
-        checkAndUnlock(i+1+cells*(j+1));
-        checkAndUnlock(i+1+cells*(j));
-    }else if(i==cells-1){
-        checkAndUnlock(i+cells*(j-1));
-        checkAndUnlock(i+cells*(j+1));
-        checkAndUnlock(i-1+cells*(j-1));
-        checkAndUnlock(i-1+cells*(j+1));
-        checkAndUnlock(i-1+cells*(j));
-    }else{
-        checkAndUnlock(i+cells*(j-1));
-        checkAndUnlock(i+cells*(j+1));
-        checkAndUnlock(i-1+cells*(j-1));
-        checkAndUnlock(i-1+cells*(j+1));
-        checkAndUnlock(i-1+cells*(j));
-        checkAndUnlock(i+1+cells*(j-1));
-        checkAndUnlock(i+1+cells*(j+1));
-        checkAndUnlock(i+1+cells*(j));
-    }
-}
-function checkAndUnlock(i){
-    // console.log("i="+i);
-    if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
-        let x=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
-        let y=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[1]);//[i] in two var
-        document.getElementsByClassName("cell")[i].classList.remove("stdBgr");//remove the grass bgr
-        document.getElementsByClassName("cell")[i].classList.add("checkedBgr");//add dirt bgr
-        document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
-        totalClick++;//incrementing the score
-        if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].innerHTML==""){
-            unlockFreeCells(x,y);
-        }
-        if(totalClick==totalCells-17){//if the score is total-17
-            gameOver("won",totalClick);//i won :)
-        }
-    }
-    // return;
-}
 document.getElementById("reload").addEventListener("click", function(){
     location.reload();//refresh the page for a new begin
 });
