@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css link -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- google fonts link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CAMPO MINATO</h1>
+        </header>
+        <main>
+            <div>
+                <label for="chice">Inserisci la difficoltà del gioco</label>
+                <select name="choice" id="choice">
+                    <option class="invisible" value=""></option>
+                    <option value="10">0 (easy)</option>
+                    <option value="9">1 (normal)</option>
+                    <option value="7">2 (hard)</option>
+                </select>
+            </div>
+            <!-- <div class="cell d-flex"><div class="stdBgr"></div><p class="left invisible">ciao</p><div class="center invisible d-flex"><p class="top">ciao</p><p class="bot">ciao</p></div><p class="right invisible">ciao</p></div> -->
+            <div class="checkedBgr" id="parentFrame">
+                <div id="gameFrame" class="">
+                </div>
+                <div id="gameOver" class="invisible underlay">
+                    <p id="resultLabel"></p>
+                    <p id="scoreLabel"></p>
+                    <button id="reload">Rigioca!</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script/script.js"></script>
+</body>
+</html>

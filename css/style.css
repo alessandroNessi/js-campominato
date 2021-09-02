@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Roboto', sans-serif;
+}
+:root{
+    --frameWidth: 800px;
+    /* --cellWidth:""; */
+    /*la cellwidth è facoltativa in quanto la genero da js*/
+}
+h1, main{
+    text-align: center;
+}
+.lost{
+    color: rgb(75, 0, 0);
+}
+.won{
+    color: rgb(200, 255, 200);
+}
+#parentFrame{
+    width: var(--frameWidth);
+    margin: auto;
+    position:relative;
+    display: flex;
+    justify-content: center;
+}
+#gameFrame{
+    width: var(--frameWidth);
+    position:absolute;
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: red; */
+}
+.d-flex{
+    display: flex;
+}
+#gameOver{
+    width: var(--frameWidth);
+    height: var(--frameWidth);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+}
+#gameOver *{
+    transform: scale(5);
+    margin: 50px;
+}
+.underlay{
+    z-index: -1;
+}
+.cell{
+    border: 1px solid grey;
+    width: var(--cellWidth);
+    height: var(--cellWidth);
+}
+/*cells data align*/
+.radius{
+    width: 100%;
+    text-align: center;
+    align-self: center;
+    font-size: 25px;
+}
+/*end data align*/
+.invisible{
+    display: none;
+}
+.get_in_background{
+    position: relative;
+}
+.checkedBgr{
+    background-image:url("../media/sand.jpg");
+    background-size: cover;
+}
+.stdBgr{
+    background-image:url("../media/grass.jpg");
+    background-size: cover;
+}
+.bomb{
+    background-color: red;
+    background-image: url(../media/bomb.png);
+    background-size: 80%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
