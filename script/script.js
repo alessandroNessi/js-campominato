@@ -29,7 +29,6 @@ function populateBombs(totalCells){
     let bombsArray=[], temp;
     while (bombsArray.length<16){
         temp=randomNum(totalCells);
-        console.log(bombsArray);
         if(!bombsArray.includes(temp)){
            bombsArray.push(temp);
         }
@@ -45,10 +44,10 @@ function generateGameBoard(cells){
     board.innerHTML="";
     //get the frame width from the var in css
     var frameWidth = parseInt(getComputedStyle(root).getPropertyValue('--frameWidth').match(/[0-9]/g).join(""));
-    console.log(`the max width is :${frameWidth}`);
+    // console.log(`the max width is :${frameWidth}`);
     var cellWidth = frameWidth/cells;
     cellWidth+="px";
-    console.log(`the cell width is :${cellWidth}`);
+    // console.log(`the cell width is :${cellWidth}`);
     //write a var cellwidth in css that is set as sigle cell width
     root.style.setProperty("--cellWidth" , cellWidth);
     let t=0,j=0;//var to cycle the matrix
@@ -199,7 +198,7 @@ function unlockFreeCells(j,i){
     }
 }
 function checkAndUnlock(i){
-    console.log("i="+i);
+    // console.log("i="+i);
     if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
         let x=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
         let y=parseInt(document.getElementsByClassName("cell")[i].getAttribute('value').split(",")[1]);//[i] in two var
