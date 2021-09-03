@@ -131,6 +131,7 @@ function generateGameBoard(cells){
     var root = document.documentElement;
     board.innerHTML="";
     //get the frame width from the var in css
+    document.getElementById("gameFrame").classList.replace("invisible","d-flex");
     var frameWidth = parseInt(getComputedStyle(root).getPropertyValue('--frameWidth').match(/[0-9]/g).join(""));
     var cellWidth = frameWidth/cells;
     cellWidth+="px";
