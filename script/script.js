@@ -69,7 +69,7 @@ function checkAndUnlock(i){
         if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].innerHTML==""){
             unlockFreeCells(x,y);
         }
-        if(totalClick==totalCells-17){//if the score is total-17
+        if(totalClick==totalCells-16){//if the score is total-17
             gameOver("won",totalClick);//i won :)
         }
     }
@@ -231,7 +231,7 @@ document.getElementById("gameFrame").addEventListener("mousedown",function(event
                     if(clickedCell.getElementsByClassName("radius")[0].innerHTML==""){
                         unlockFreeCells(j,i);
                     }
-                    if(totalClick==totalCells-17){//if the score is total-17
+                    if(totalClick==totalCells-16){//if the score is total-17
                         gameOver("won",totalClick);//i won :)
                     }
                 }
