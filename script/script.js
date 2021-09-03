@@ -82,8 +82,20 @@ function toggleSelect(){
 function randomNum(x){
     return Math.floor(Math.random()*x);
 }
+function cleanMap(){//removes all grass from the bombs position
+    let cellIndex=0;
+    for(let j=0; j<bombMap.length; j++){
+        for( let i=0; i<bombMap.length;i++){
+            if(bombMap[j][i]==1){
+                document.getElementById("gameFrame").getElementsByClassName("cell")[cellIndex].classList.replace("stdBgr","bomb");
+            }
+            cellIndex++;
+        }
+    }
+}
 /**function that change the overlay form and gives the result+score */
 function gameOver(result,score){
+    cleanMap();
     document.getElementById("gameFrame").classList.add("underlay");
     document.getElementById("gameOver").classList.remove("underlay");
     document.getElementById("gameOver").classList.remove("invisible");
