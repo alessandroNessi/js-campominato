@@ -64,6 +64,7 @@ function checkAndUnlock(i){
         document.getElementsByClassName("cell")[i].classList.remove("stdBgr");//remove the grass bgr
         document.getElementsByClassName("cell")[i].classList.add("checkedBgr");//add dirt bgr
         document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
+        bombMap[x][y]=2;
         totalClick++;//incrementing the score
         if(document.getElementsByClassName("cell")[i].getElementsByClassName("radius")[0].innerHTML==""){
             unlockFreeCells(x,y);
@@ -134,10 +135,10 @@ function generateGameBoard(cells){
         //populate bombs array adding a fake attribute value to the div where i save the corresponding position of the cell in the array
         if(bombsArray.includes(i)){
             board.innerHTML+=`<div class="cell stdBgr" value="${t},${j}"></div>`;
-            bombMap[t][j]=1;//populate matrix with mine
+            bombMap[t][j]=1;//insert bomb in the matrix position
         }else{
             board.innerHTML+=`<div class="cell stdBgr d-flex" value="${t},${j}"><p class="radius invisible"></p></div>`;
-            bombMap[t][j]=0;//populate matrix with empty
+            bombMap[t][j]=0;//insert empty cell in the matrix position
         }
         j++;
     }
@@ -190,27 +191,47 @@ document.getElementById("choice").addEventListener("change", function(event){
     //toggle select off
     toggleSelect();
 });
+//eventlistener to prevent the right click memu an let me get the event button 2 onmousedown
+document.getElementsByTagName("html")[0].addEventListener("contextmenu",function(event){
+    event.preventDefault();
+});
 //add the click eventlistener to the frame
 document.getElementById("gameFrame").addEventListener("mousedown",function(event){
+    var clickType=event.button;
+    console.log(clickType);
     clickedCell=event.target;
+    console.log(clickedCell);
     if(clickedCell.classList.contains("cell")){
         let j=parseInt(clickedCell.getAttribute('value').split(",")[0]);//i save the position of the fake value [j] and-
         let i=parseInt(clickedCell.getAttribute('value').split(",")[1]);//[i] in two var
-        clickedCell.classList.remove("stdBgr");//remove the grass bgr
-        if(bombMap[j][i]==1){//if the cell corispond to a bomb
-            clickedCell.classList.add("bomb");//adding bomb bgr
-            gameOver("lost",totalClick);//ending game
-        }else{
-            if(clickedCell.getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
-                clickedCell.classList.add("checkedBgr");//add dirt bgr
-                clickedCell.getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
-                totalClick++;//incrementing the score
-                if(clickedCell.getElementsByClassName("radius")[0].innerHTML==""){
-                    unlockFreeCells(j,i);
+        if(clickType==0){
+            clickedCell.classList.remove("stdBgr");//remove the grass bgr
+            if(bombMap[j][i]==1){//if the cell corispond to a bomb
+                clickedCell.classList.add("bomb");//adding bomb bgr
+                gameOver("lost",totalClick);//ending game
+            }else if(bombMap[j][i]==0){
+                if(clickedCell.getElementsByClassName("radius")[0].classList.contains("invisible")){//if hasn't already clicked so it still have invisible on radius
+                    clickedCell.classList.add("checkedBgr");//add dirt bgr
+                    clickedCell.getElementsByClassName("radius")[0].classList.remove("invisible");//show the bombs in the radius
+                    bombMap[j][i]=2;
+                    totalClick++;//incrementing the score
+                    if(clickedCell.getElementsByClassName("radius")[0].innerHTML==""){
+                        unlockFreeCells(j,i);
+                    }
+                    if(totalClick==totalCells-17){//if the score is total-17
+                        gameOver("won",totalClick);//i won :)
+                    }
                 }
-                if(totalClick==totalCells-17){//if the score is total-17
-                    gameOver("won",totalClick);//i won :)
-                }
+            }
+        }else if(clickType==2){//se clicco con il tasto destro
+            if(bombMap[j][i]>2){//se la cella è una bandierina
+                clickedCell.classList.toggle("stdBgr");//aggiungo il campo verde
+                clickedCell.classList.toggle("flag");//tolgo la bandiera
+                bombMap[j][i]-=3;//ripristino il valore della cella
+            }else if(bombMap[j][i]<2){//se la cella non è una bandierina
+                clickedCell.classList.toggle("stdBgr");//tolgo l'erba
+                clickedCell.classList.toggle("flag");//aggiungo la bandiera
+                bombMap[j][i]+=3;//aggiungo 2 per togliere la cella dal controllo sulla condizione 0/1
             }
         }
     }

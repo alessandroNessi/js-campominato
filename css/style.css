@@ -87,3 +87,7 @@ h1, main{
     background-position-y: center;
     background-repeat: no-repeat;
 }
+.flag{
+    background-image:url("../media/jolly_roger.png");
+    background-size: cover;
+}
