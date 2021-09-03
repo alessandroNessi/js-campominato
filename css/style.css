@@ -35,7 +35,7 @@ h1, main{
 }
 .won{
     color: rgb(200, 255, 200, 0.9);
-    
+
 }
 label{
     color: var(--textColor);
@@ -55,7 +55,7 @@ label{
     /* display: flex; */
     flex-wrap: wrap;
     border-radius: 4px;
-    box-shadow: 20px 4px 10px rgba(0,0,0,0.35), 40px 8px 10px rgba(0,0,0,0.15);
+    box-shadow: 30px 6px 25px rgba(0,0,0,0.65), 60px 12px 25px rgba(0,0,0,0.25);
 }
 .d-flex{
     display: flex;
