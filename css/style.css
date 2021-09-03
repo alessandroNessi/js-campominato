@@ -35,6 +35,7 @@ h1, main{
 }
 .won{
     color: rgb(200, 255, 200, 0.9);
+    
 }
 label{
     color: var(--textColor);
